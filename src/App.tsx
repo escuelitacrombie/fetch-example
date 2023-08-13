@@ -1,7 +1,7 @@
-import useSubcription from "./hooks/useSubcription.ts";
+import useSubscription from "./hooks/useSubscription.ts";
 
 function App() {
-  const { error, loading, subscriptions } = useSubcription();
+  const { error, loading, subscriptions } = useSubscription();
 
   if (loading) {
     return <p>loading...</p>;
@@ -13,9 +13,9 @@ function App() {
 
   return (
     <div>
-      {subscriptions.map((subcriptions) => (
-        <div key={subcriptions.title}>
-          <p>{subcriptions.title}</p>
+      {subscriptions.map((subscription) => (
+        <div key={subscription.title}>
+          <p>{subscription.title}</p>
         </div>
       ))}
     </div>

@@ -9,7 +9,7 @@ type Suscription = {
   type: "monthly" | "daily" | "weekly";
 };
 
-const useSubcription = () => {
+const useSubscription = () => {
   const [subscriptions, setSubcriptions] = useState<Suscription[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
@@ -33,4 +33,4 @@ const useSubcription = () => {
   return { subscriptions, loading, error };
 };
 
-export default useSubcription;
+export default useSubscription;
