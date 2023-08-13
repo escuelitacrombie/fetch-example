@@ -11,7 +11,7 @@ type Suscription = {
 const BASE_URL = "https://6xrb5goi1l.execute-api.us-east-1.amazonaws.com";
 
 function App() {
-  const [suscriptions, setSuscriptions] = useState<Suscription[]>([]);
+  const [subcriptions, setSubcriptions] = useState<Suscription[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
 
@@ -20,7 +20,7 @@ function App() {
     fetch(`${BASE_URL}/api/subscription`)
       .then((response) => {
         response.json().then((result) => {
-          setSuscriptions(result);
+          setSubcriptions(result);
         });
       })
       .catch((error) => {
@@ -41,9 +41,9 @@ function App() {
 
   return (
     <div>
-      {suscriptions.map((suscriptions) => (
-        <div key={suscriptions.title}>
-          <p>{suscriptions.title}</p>
+      {subcriptions.map((subscription) => (
+        <div key={subscription.title}>
+          <p>{subscription.title}</p>
         </div>
       ))}
     </div>
