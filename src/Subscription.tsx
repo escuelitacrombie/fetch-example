@@ -13,6 +13,7 @@ const Subscription = () => {
   const [subcriptions, setSubcriptions] = useState<Suscription[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
+  const [reload, setReload] = useState(true)
 
   useEffect(() => {
     setLoading(true);
@@ -28,7 +29,8 @@ const Subscription = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+      setReload(false)
+  }, [reload]);
 
   if (loading) {
     return <p>loading...</p>;
@@ -49,6 +51,9 @@ const Subscription = () => {
           <p>{subscription.price}</p>
         </div>
       ))}
+      <div className="container-button">
+        <button onClick={() => {setReload(true)}}>Refrescar</button>
+      </div>
     </div>
   );
 };
