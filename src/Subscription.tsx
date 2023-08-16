@@ -13,6 +13,7 @@ const Subscription = () => {
   const [subcriptions, setSubcriptions] = useState<Suscription[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string>();
+  const [reload, setReload] = useState(false);
 
   useEffect(() => {
     setLoading(true);
@@ -28,7 +29,7 @@ const Subscription = () => {
       .finally(() => {
         setLoading(false);
       });
-  }, []);
+  }, [reload]);
 
   if (loading) {
     return <p>loading...</p>;
@@ -40,6 +41,7 @@ const Subscription = () => {
 
   return (
     <div>
+      <h4>Subscriptions</h4>
       {subcriptions.map((subscription) => (
         <div className="card" key={subscription.title}>
           <p>{subscription.title}</p>
@@ -49,6 +51,7 @@ const Subscription = () => {
           <p>{subscription.price}</p>
         </div>
       ))}
+      <button onClick={() => setReload(true)}>Reload</button>
     </div>
   );
 };
