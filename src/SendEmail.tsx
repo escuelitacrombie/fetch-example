@@ -1,38 +1,36 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { useForm } from "react-hook-form";
+import { yupResolver } from '@hookform/resolvers/yup';
+import * as yup from "yup"
 import { BASE_URL } from "./App";
 
-type FormData = {
-    email: string;
-    fullName: string;
-    phone: string;
-    message: string;
-};
+
+const schema = yup.object({
+    email: yup.string().email().required(),
+    phone: yup.string().min(9).max(15).required(),
+    fullName: yup.string().min(3).max(20).required(),
+    message: yup.string().min(3).max(20).required()
+}).required();
+type FormData = yup.InferType<typeof schema>;
+
 
 const SendEmail: React.FC = () => {
-    const [formData, setFormData] = useState<FormData>({
-        email: '',
-        phone: '',
-        fullName: '',
-        message: '',
+
+    const { register, handleSubmit, formState: { errors } } = useForm<FormData>({
+        resolver: yupResolver(schema)
     });
 
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-        const { name, value } = e.target;
-        setFormData((prevData) => ({
-            ...prevData,
-            [name]: value,
-        }));
-    };
 
-    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
+
+    const handleFetch = (data: FormData) => {
+        
 
         fetch(`${BASE_URL}/api/send-email`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify(formData),
+            body: JSON.stringify(data),
         })
             .then((response) => {
                 if (response.ok) {
@@ -44,28 +42,28 @@ const SendEmail: React.FC = () => {
             .catch((error) => {
                 console.error('Error en la petición:', error);
             });
+            
     };
 
     return (
-        <form onSubmit={handleSubmit} className='form'>
+        <form onSubmit={handleSubmit(handleFetch)} className='form'>
             <div>
                 <label htmlFor="fullName">Nombre:</label>
                 <input
                     type="text"
                     id="fullName"
-                    name="fullName"
-                    value={formData.fullName}
-                    onChange={handleInputChange}
+                    
+                    {...register("fullName")}
                 />
             </div>
             <div>
                 <label htmlFor="phone">Telefono:</label>
                 <input
+                    
                     type="number"
                     id="phone"
-                    name="phone"
-                    value={formData.phone}
-                    onChange={handleInputChange}
+                    
+                    {...register("phone")}
                 />
             </div>
             <div>
@@ -73,19 +71,17 @@ const SendEmail: React.FC = () => {
                 <input
                     type="text"
                     id="email"
-                    name="email"
-                    value={formData.email}
-                    onChange={handleInputChange}
+                    {...register("email")}
                 />
             </div>
             <div>
                 <label htmlFor="message">Comentario:</label>
                 <textarea
                     id="message"
-                    name="message"
-                    value={formData.message}
-                    onChange={handleInputChange}
+                    {...register("message")}
+
                 />
+                <p>{errors.message?.message}</p>
             </div>
             <button type="submit">Enviar</button>
         </form>
